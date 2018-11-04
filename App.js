@@ -1,58 +1,53 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+import { StackNavigator } from 'react-navigation';
+import Home from './src/screens/home';
+import ReadBarcode from './src/screens/readBarcode';
 
-import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+console.disableYellowBox = true;
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-      </View>
-    );
+export default StackNavigator({
+  'home' : {
+    screen: Home,
+    navigationOptions: ({ navigation }) => {
+      return ({
+        // title: title,
+        title: "home",
+        headerLeft: null,
+        headerTitleStyle: {
+          fontSize: 30,
+          color: '#fff',
+          alignSelf: 'center',
+        }
+      });
+    }
+  },
+  'readBarcode' : {
+    screen: ReadBarcode,
+    navigationOptions: () => {
+      return ({
+        title: "Read Barcode",
+        headerTitleStyle: {
+          fontSize: 30,
+          color: '#fff',
+          alignSelf: 'center',
+        }
+      });
+    }
+  },
+},{
+  navigationOptions: {
+    'title': 'IGR-Token',
+    headerTintColor: '#fff',
+    headerStyle: {
+      backgroundColor: '#000', // vermelho ketchup
+      borderBottomWidth: 1,
+      borderBottomColor: '#C5C5C5', // cinza claro
+    }, 
+    headerTitleStyle: {
+      fontSize: 30,
+      color: '#fff',
+      alignSelf: 'center'
+    }
   }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
 });
+
+// https://github.com/react-native-community/react-native-camera/issues/1530#issuecomment-385752864
