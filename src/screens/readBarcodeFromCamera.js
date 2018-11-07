@@ -4,7 +4,7 @@ import Loading from '../components/Loading'
 import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 
-class CameraGTIN13Reader extends React.Component {
+class ReadBarcodeFromCameraScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CameraGTIN13Reader;
+export default ReadBarcodeFromCameraScreen;

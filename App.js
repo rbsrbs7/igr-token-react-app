@@ -1,12 +1,13 @@
 import { StackNavigator } from 'react-navigation';
 import HomeScreen from './src/screens/home';
-import ReadBarcodeScreen from './src/screens/readBarcode';
-import ReadDateScreen from './src/screens/readBarcode';
+import ReadBarcodeFromInputScreen from './src/screens/readBarcodeFromInput';
+import ReadBarcodeFromCameraScreen from './src/screens/readBarcodeFromCamera';
+import ReadDateFromInputScreen from './src/screens/readDateFromInput';
 
 console.disableYellowBox = true;
 
 export default StackNavigator({
-  'Home' : {
+  'HomeScreen' : {
     screen: HomeScreen,
     navigationOptions: ({ navigation }) => {
       return ({
@@ -21,8 +22,8 @@ export default StackNavigator({
       });
     }
   },
-  'ReadBarcode' : {
-    screen: ReadBarcodeScreen,
+  'ReadBarcodeFromInputScreen' : {
+    screen: ReadBarcodeFromInputScreen,
     navigationOptions: () => {
       return ({
         title: "Read Barcode",
@@ -34,8 +35,21 @@ export default StackNavigator({
       });
     }
   },
-  'ReadDate' : {
-    screen: ReadDateScreen,
+  'ReadBarcodeFromCameraScreen' : {
+    screen: ReadBarcodeFromCameraScreen,
+    navigationOptions: () => {
+      return ({
+        title: "Read Barcode",
+        headerTitleStyle: {
+          fontSize: 30,
+          color: '#fff',
+          alignSelf: 'center',
+        }
+      });
+    }
+  },
+  'ReadDateFromInputScreen' : {
+    screen: ReadDateFromInputScreen,
     navigationOptions: () => {
       return ({
         title: "Read Date",

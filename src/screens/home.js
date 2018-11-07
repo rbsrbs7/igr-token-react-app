@@ -24,11 +24,11 @@ class HomeScreen extends React.Component {
         <View style={styles.viewButton}>
           <TouchableOpacity
             onPress={pageParams => {
-              this.props.navigation.navigate('ReadBarcode', pageParams); // (id_page, params)
+              this.props.navigation.navigate('ReadBarcodeFromInputScreen', pageParams);
             }}
             style={styles.button}>
             <Text style={styles.textButton}>
-              Read barcode <Icon name="camera" size={20}/>
+              Get Started
             </Text>
           </TouchableOpacity>
         </View>
