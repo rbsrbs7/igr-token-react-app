@@ -1,10 +1,12 @@
 import React from 'react';
-import {Text, StyleSheet} from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 
 const ErrorMessage = props => {
-  const {message } = props;
+  const {message} = props;
   return (
-    <Text style={style.message}>{message}</Text>
+    <Text style={style.message}>
+      {message}
+    </Text>
   )
 };
 

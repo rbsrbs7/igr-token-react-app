@@ -1,12 +1,13 @@
 import { StackNavigator } from 'react-navigation';
-import Home from './src/screens/home';
-import ReadBarcode from './src/screens/readBarcode';
+import HomeScreen from './src/screens/home';
+import ReadBarcodeScreen from './src/screens/readBarcode';
+import ReadDateScreen from './src/screens/readBarcode';
 
 console.disableYellowBox = true;
 
 export default StackNavigator({
-  'home' : {
-    screen: Home,
+  'Home' : {
+    screen: HomeScreen,
     navigationOptions: ({ navigation }) => {
       return ({
         // title: title,
@@ -16,15 +17,28 @@ export default StackNavigator({
           fontSize: 30,
           color: '#fff',
           alignSelf: 'center',
+        },
+      });
+    }
+  },
+  'ReadBarcode' : {
+    screen: ReadBarcodeScreen,
+    navigationOptions: () => {
+      return ({
+        title: "Read Barcode",
+        headerTitleStyle: {
+          fontSize: 30,
+          color: '#fff',
+          alignSelf: 'center',
         }
       });
     }
   },
-  'readBarcode' : {
-    screen: ReadBarcode,
+  'ReadDate' : {
+    screen: ReadDateScreen,
     navigationOptions: () => {
       return ({
-        title: "Read Barcode",
+        title: "Read Date",
         headerTitleStyle: {
           fontSize: 30,
           color: '#fff',
@@ -50,4 +64,6 @@ export default StackNavigator({
   }
 });
 
-// https://github.com/react-native-community/react-native-camera/issues/1530#issuecomment-385752864
+// disable header
+// header: () => null,  //this will hide the Stack navigator's header (TabA_StackNavigator)
+// tabBarVisible: false, //this will hide the TabBar navigator's header (LoggedIn_TabNavigator)

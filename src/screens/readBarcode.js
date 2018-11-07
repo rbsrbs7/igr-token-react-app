@@ -1,83 +1,74 @@
 import React from 'react';
-import axios from 'axios';
-import Loading from '../components/Loading'
-import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
-import { RNCamera } from 'react-native-camera';
+import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import CameraGTIN13Reader from '../components/CameraGTIN13Reader';
+import KeyboardGTIN13Reader from '../components/KeyboardGTIN13Reader';
 
-class ReadBarcode extends React.Component {
+class ReadBarcodeScreen extends React.Component<*, State> {
+  
   constructor(props) {
     super(props);
     this.state = {
+      index: 0,
+      routes: [
+        { key: 'cameraBarcode', title: 'By Camera' },
+        { key: 'keyboardBarcode', title: 'By Keyboard' },
+      ],
     };
+    console.log("[ReadBarcodeScreen|navigation]");
+    console.log(this.props.navigation);
+  }
+
+  render() {
+    return (
+      <TabView
+        navigationState={this.state}
+        renderScene={this._renderScene}
+        renderTabBar={this._renderTabBar}
+        onIndexChange={this._handleIndexChange}
+        initialLayout={{ width: Dimensions.get('window').width }}
+      />
+    );
   }
 
   componentDidMount() {
   };
 
-  mountScreen() {
-    return (
-      <View style={styles.container}>
-        <RNCamera
-          ref={ref => {
-            this.camera = ref;
-          }}
-          style = {styles.preview}
-          type={RNCamera.Constants.Type.back}
-          flashMode={RNCamera.Constants.FlashMode.on}
-          permissionDialogTitle={'Permission to use camera'}
-          permissionDialogMessage={'We need your permission to use your camera phone'}
-          onGoogleVisionBarcodesDetected={({ barcodes }) => {
-            console.log(barcodes)
-          }}
-        />
-        <View style={{flex: 0, flexDirection: 'row', justifyContent: 'center',}}>
-          <TouchableOpacity
-            onPress={this.takePicture.bind(this)}
-            style = {styles.capture}>
-            <Text style={{fontSize: 14}}>
-              SNAP 
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
+  mountCameraBarcodeScreen = () => (
+    <CameraGTIN13Reader />
+  );
 
-  takePicture = async function() {
-    if (this.camera) {
-      const options = { quality: 0.5, base64: true };
-      const data = await this.camera.takePictureAsync(options)
-      console.log(data.uri);
-    }
-  };
+  mountKeyboardBarcodeScreen = () => (
+    <KeyboardGTIN13Reader navigation={this.props.navigation} />
+  );
 
-  render() {
-    return (
-      this.mountScreen()
-    );
-  }
+  _handleIndexChange = index =>
+    this.setState({
+      index,
+    });
+
+  _renderTabBar = props => (
+    <TabBar
+      {...props}
+      scrollEnabled
+      indicatorStyle={styles.indicator}
+      style={styles.tabbar}
+      tabStyle={styles.tab}
+      labelStyle={styles.label}
+    />
+  );
+
+  _renderScene = SceneMap({
+    cameraBarcode: this.mountCameraBarcodeScreen,
+    keyboardBarcode: this.mountKeyboardBarcodeScreen
+  });
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    backgroundColor: 'black'
-  },
-  preview: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center'
-  },
-  capture: {
-    flex: 0,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    padding: 15,
-    paddingHorizontal: 20,
-    alignSelf: 'center',
-    margin: 20
   }
 });
 
-export default ReadBarcode;
+export default ReadBarcodeScreen;

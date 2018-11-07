@@ -1,18 +1,17 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-class Home extends React.Component {
+class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
     };
+    console.log("[HomeScreen|navigation]");
+    console.log(this.props.navigate);
   }
 
-  componentDidMount() {
-  };
-
-  mountScreen() {
+  render() {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>
@@ -22,14 +21,14 @@ class Home extends React.Component {
           latest date associoated with the production lot. Usually the date 
           is printed on the wrapper.
         </Text>
-        <View style={{flex: 0, flexDirection: 'row', justifyContent: 'center',}}>
+        <View style={styles.viewButton}>
           <TouchableOpacity
             onPress={pageParams => {
-              this.props.navigation.navigate('readBarcode', pageParams); // (id_page, params)
+              this.props.navigation.navigate('ReadBarcode', pageParams); // (id_page, params)
             }}
-            style = {styles.button}>
+            style={styles.button}>
             <Text style={styles.textButton}>
-              Read barcode <Icon name="camera" size={20} />
+              Read barcode <Icon name="camera" size={20}/>
             </Text>
           </TouchableOpacity>
         </View>
@@ -37,17 +36,20 @@ class Home extends React.Component {
     );
   }
 
-  render() {
-    return (
-      this.mountScreen()
-    );
-  }
+  componentDidMount() {
+  };
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   }, 
+  viewButton: {
+    flex: 0, 
+    margin: 20,
+    flexDirection: 'row', 
+    justifyContent: 'center'
+  },
   text: {
     color: '#000',
     fontSize: 15,
@@ -71,4 +73,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Home;
+export default HomeScreen;
