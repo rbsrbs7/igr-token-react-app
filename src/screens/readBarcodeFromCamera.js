@@ -8,7 +8,8 @@ class ReadBarcodeFromCameraScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      barcode: ""
+      type: "",
+      barcode: "",
     };
   }
 
@@ -25,12 +26,16 @@ class ReadBarcodeFromCameraScreen extends React.Component {
           permissionDialogTitle={'Permission to use camera'}
           permissionDialogMessage={'We need your permission to use your camera phone'}
           onGoogleVisionBarcodesDetected={({ barcodes }) => {
-            this.setState({barcode: barcodes});
+            this.setState({type: barcodes[0].type});
+            this.setState({barcode: barcodes[0].data});
           }}
         />
-        <View style={{flex: 0, flexDirection: 'row', justifyContent: 'center',}}>
-          <Text style={styles.textBarcode}>
-            {this.barcode}
+        <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
+          <Text style={styles.text}>
+            type: {this.state.type}
+          </Text>
+          <Text style={styles.text}>
+            barcode: {this.state.barcode}
           </Text>
         </View>
       </View>
@@ -44,11 +49,10 @@ class ReadBarcodeFromCameraScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
     backgroundColor: 'black'
   },
   preview: {
-    flex: 1,
+    flex: 5,
     justifyContent: 'flex-end',
     alignItems: 'center'
   },
@@ -62,7 +66,7 @@ const styles = StyleSheet.create({
     margin: 20
   },
   text: {
-    color: '#000',
+    color: '#fff',
     fontSize: 15,
     margin: 10
   }
