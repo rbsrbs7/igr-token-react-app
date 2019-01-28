@@ -7,6 +7,7 @@ class ReadBarcodeFromInputScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      session: this.props.navigation.getParam("session"),
       barcode: ""
     };
   }
@@ -21,7 +22,7 @@ class ReadBarcodeFromInputScreen extends React.Component {
         <View style={styles.viewTextInput}>
           <TextInput
             style={styles.textInput}
-            maxLength={14}
+            maxLength={13}
             placeholder="Type GTIN-13 code here"
             keyboardType='numeric'
             onChangeText={this.checkText}
@@ -31,7 +32,7 @@ class ReadBarcodeFromInputScreen extends React.Component {
         <View style={styles.viewButton}>
           <TouchableOpacity
             onPress={pageParams => {
-              this.props.navigation.navigate('ReadBarcodeFromCameraScreen', pageParams);
+              this.props.navigation.navigate('ReadBarcodeFromCameraScreen', pageParams); // id_page, pageParams
             }}
             style={styles.button}>
             <Text style={styles.textButton}>
@@ -47,12 +48,16 @@ class ReadBarcodeFromInputScreen extends React.Component {
   };
 
   checkText = text => {
-    this.setState({barcode: text});
-    if(this.state.barcode.length == 13) {
-      this.props.navigation.navigate('ReadDateFromInputScreen');
-    }
+    this.setState({barcode: text}, () => {
+      if(this.state.barcode.length == 13) {
+        let session = {...this.state.session};
+        session.barcode = text;
+        this.setState({session}, () => {
+          this.props.navigation.navigate('ReadDateFromInputScreen', { session: this.state.session } );
+        });
+      }
+    });
   }
-
 }
 
 const styles = StyleSheet.create({

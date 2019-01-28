@@ -6,9 +6,17 @@ class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      session: {
+        barcode: "",
+        date: "",
+        concatenation: "",
+        address: "",
+        apiUrlGetAddressTransactions: "",
+        apiUrlGetTxInfo: "",
+        apiResponseAddressTransactions: [],
+        apiResponseTxInfo: []
+      }
     };
-    console.log("[HomeScreen|navigation]");
-    console.log(this.props.navigate);
   }
 
   render() {
@@ -23,8 +31,8 @@ class HomeScreen extends React.Component {
         </Text>
         <View style={styles.viewButton}>
           <TouchableOpacity
-            onPress={pageParams => {
-              this.props.navigation.navigate('ReadBarcodeFromInputScreen', pageParams);
+            onPress={() => {
+              this.props.navigation.navigate('ReadBarcodeFromInputScreen', {session: this.state.session});
             }}
             style={styles.button}>
             <Text style={styles.textButton}>

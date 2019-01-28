@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "js-sha3": "^0.8.0",
     "react": "16.6.3",
     "react-native": "0.57.8",
     "react-native-camera": "^1.9.1",

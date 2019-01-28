@@ -3,6 +3,7 @@ import HomeScreen from './src/screens/home';
 import ReadBarcodeFromInputScreen from './src/screens/readBarcodeFromInput';
 import ReadBarcodeFromCameraScreen from './src/screens/readBarcodeFromCamera';
 import ReadDateFromInputScreen from './src/screens/readDateFromInput';
+import ShowResultsScreen from './src/screens/results';
 
 console.disableYellowBox = true;
 
@@ -12,10 +13,10 @@ export default StackNavigator({
     navigationOptions: ({ navigation }) => {
       return ({
         // title: title,
-        title: "home",
+        title: "IGR valued ingredient certification",
         headerLeft: null,
         headerTitleStyle: {
-          fontSize: 30,
+          fontSize: 20,
           color: '#fff',
           alignSelf: 'center',
         },
@@ -28,7 +29,7 @@ export default StackNavigator({
       return ({
         title: "Read Barcode",
         headerTitleStyle: {
-          fontSize: 30,
+          fontSize: 20,
           color: '#fff',
           alignSelf: 'center',
         }
@@ -41,7 +42,7 @@ export default StackNavigator({
       return ({
         title: "Read Barcode",
         headerTitleStyle: {
-          fontSize: 30,
+          fontSize: 20,
           color: '#fff',
           alignSelf: 'center',
         }
@@ -54,7 +55,20 @@ export default StackNavigator({
       return ({
         title: "Read Date",
         headerTitleStyle: {
-          fontSize: 30,
+          fontSize: 20,
+          color: '#fff',
+          alignSelf: 'center',
+        }
+      });
+    }
+  },
+  'ShowResultsScreen' : {
+    screen: ShowResultsScreen,
+    navigationOptions: () => {
+      return ({
+        title: "Results",
+        headerTitleStyle: {
+          fontSize: 20,
           color: '#fff',
           alignSelf: 'center',
         }
@@ -71,7 +85,7 @@ export default StackNavigator({
       borderBottomColor: '#C5C5C5', // cinza claro
     }, 
     headerTitleStyle: {
-      fontSize: 30,
+      fontSize: 20,
       color: '#fff',
       alignSelf: 'center'
     }

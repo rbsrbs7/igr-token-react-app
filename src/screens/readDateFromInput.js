@@ -8,6 +8,7 @@ class ReadDateFromInputScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      session: this.props.navigation.getParam("session"),
       date: "",
       error: ""
     };
@@ -25,7 +26,7 @@ class ReadDateFromInputScreen extends React.Component {
           <View style={styles.viewRow}>
             <TextInput
               style={styles.textInput}
-              maxLength={7}
+              maxLength={6}
               placeholder="Type date here on format YYYYMM"
               keyboardType='numeric'
               onChangeText={(text) => { this.setState({date: text}); }}
@@ -54,29 +55,47 @@ class ReadDateFromInputScreen extends React.Component {
   };
 
   checkText = () => {
-    const isNum = /^\d+$/.test(this.state.date);    
-    var year = "";
-    var month = "";
-    if(this.state.date.length < 6) {
-      this.setState({error: "The date must have 6 characters"});
-    } else if(! isNum) {
-      this.setState({error: "The date must have only numbers"});
+    if(!(/^\d+$/.test(this.state.date))) {
+      this.setState({error: "The date must have just numbers"});
     } else {
-      year = this.state.date[0] + this.state.date[1] + this.state.date[2] + this.state.date[3];
-      month = this.state.date[4] + this.state.date[5];
-      if(parseInt(year) == 0 || parseInt(year) < 2018) {
-        this.setState({error: "The year must be a number between 2018 and 2099"});
-      } else if(parseInt(month) == 0 || parseInt(month) > 12) {
-        this.setState({error: "The month must be a number between 1 and 12"});
+      var date = this.state.date;
+      var year = "";
+      var month = "";
+      var day = "";
+      if(date.length < 4 || date.length > 6) {
+        this.setState({error: "The date must have between 4 and 6 characters"});
       } else {
-        this.setState({error: ""});
-      }
+        if(date.length == 4) {
+          year = date[0] + date[1];
+          month = date[2] + date[3];
+          day = "01";
+        } else if(date.length == 5) {
+          year = date[0] + date[1];
+          month = date[2] + date[3];
+          day = "0" + date[4];
+        } else {
+          year = date[0] + date[1];
+          month = date[2] + date[3];
+          day = date[4] + date[5];
+        }
+        if(parseInt(year, 10) == 0 || parseInt(year, 10) < 18) {
+          this.setState({error: "The year must be a number between 18 and 99"});
+        } else if(parseInt(month, 10) == 0 || parseInt(month, 10) > 12) {
+          this.setState({error: "The month must be a number between 1 and 12"});
+        } else if(parseInt(day, 10) == 0 || parseInt(day, 10) > 31) {
+          this.setState({error: "The day must be a number between 1 and 31"});
+        } else {
+          let session = {...this.state.session};
+          session.date = year + month + day;
+          session.concatenation = session.barcode + session.date;
+          this.setState({session: session, error: ""}, () => {
+            this.props.navigation.navigate('ShowResultsScreen', { session: this.state.session } ); 
+          });
+        }
+      } 
     }
   }
 }
-
-// this.props.navigation.navigate('HomeScreen');
-// {pageParams => { this.props.navigation.navigate('ReadBarcodeFromCameraScreen', pageParams);}
 
 const styles = StyleSheet.create({
   container: {
