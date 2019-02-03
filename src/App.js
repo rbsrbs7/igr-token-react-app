@@ -1,9 +1,9 @@
 import { StackNavigator } from 'react-navigation';
-import HomeScreen from './src/screens/home';
-import ReadBarcodeFromInputScreen from './src/screens/readBarcodeFromInput';
-import ReadBarcodeFromCameraScreen from './src/screens/readBarcodeFromCamera';
-import ReadDateFromInputScreen from './src/screens/readDateFromInput';
-import ShowResultsScreen from './src/screens/results';
+import HomeScreen from './screens/home';
+import ReadBarcodeFromInputScreen from './screens/readBarcodeFromInput';
+import ReadBarcodeFromCameraScreen from './screens/readBarcodeFromCamera';
+import ReadDateFromInputScreen from './screens/readDateFromInput';
+import ShowResultsScreen from './screens/showResults';
 
 console.disableYellowBox = true;
 

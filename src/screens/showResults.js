@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
+import { View, Text, Button, StyleSheet, TextInput, ActivityIndicator, Picker } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Line from '../components/Line';
 import Loading from '../components/Loading';
@@ -39,7 +39,7 @@ export default class ShowResults extends React.Component {
       return (
         <View style={style.container}>
           <Text>
-            {this.state.apiUrlGetAddressTransactions}
+            {this.state.session.txInfos.length}
           </Text>
         </View>
       );
@@ -49,11 +49,12 @@ export default class ShowResults extends React.Component {
   componentDidMount() {
     let hash = keccak256.create();
     let session = {...this.state.session};
+    session.barcode = "1234567890123";
+    session.date = "180901";
     session.concatenation = session.barcode + session.date;
     session.address = hash.update(this.state.session.concatenation).hex();
     // session.address = "0x" + session.address.substr(session.address.length - 40);
     session.address = "0x1448Eab3182B71aE5322168D037fEB0125CAC92F";
-    session.apiUrlGetAddressTransactions = 'https://api.ethplorer.io/getAddressTransactions/'+session.address+'?showZeroValues=1&apiKey=freekey';
     this.setState({session}, () => {
       this.getDataFromAPI();
     });
@@ -61,51 +62,45 @@ export default class ShowResults extends React.Component {
 
   getDataFromAPI() {
     console.log("requesting API...");
-    axios.get(this.state.session.apiUrlGetAddressTransactions)
+    let apiUrlGetAddressTransactions = 'https://api.ethplorer.io/getAddressTransactions/'+this.state.session.address+'?showZeroValues=1&apiKey=freekey';
+    axios.get(apiUrlGetAddressTransactions)
     .then(response => { 
       let session = {...this.state.session};
-      session.apiResponseAddressTransactions = response.data;
+      response.data.forEach(element => {
+        session.addressTransactions.push(element);
+      });
       this.setState({session}, () => {
-        console.log("requenting API... OK");
-        this.state.session.apiResponseAddressTransactions.forEach(function(transaction) {
-          console.log("getting " + transaction['hash'] + '...');
-          axios.get( 'https://api.ethplorer.io/getTxInfo/' + transaction['hash'] + '?apiKey=freekey')
-          .then(response => { 
-            console.log("received " + response.data['hash']);
-            // let session = {...this.state.session};
-            // session.apiResponseTxInfo.append(response.data);
-            // this.setState({session}, () => {
-            //   console.log("session.apiResponseAddressTransactions.length: ");
-            //   console.log(session.apiResponseAddressTransactions.length);
-            // });
+        this.state.session.addressTransactions.forEach(addressTransaction => {
+          let apiUrlGetTxInfo = 'https://api.ethplorer.io/getTxInfo/' + addressTransaction['hash'] + '?apiKey=freekey'
+          axios.get(apiUrlGetTxInfo)
+          .then(response => {
+            let session = {...this.state.session};
+            session.txInfos.push(response.data);
+            this.setState({session}, () => {
+              if(this.state.session.txInfos.length == this.state.session.addressTransactions.length) {
+                this.setState({loading: false, errorMessage: ""}, () => {
+                  console.log("requesting API... OK");
+                });
+              }
+            });
           }).catch(error => {
-          });
+            this.setState({errorMessage: error});
+          }); 
         });
       });
     }).catch(error => {
-      this.setState({
-        errorMessage: error,
-      });
-      setTimeout(() => {
-        this.setState({
-          errorMessage: "",
-        });
-        setTimeout(() => {  
-          this.getDataFromAPI();
-        }, 3000);
-      }, 3000);
+      this.setState({errorMessage: error});
     });
   }
 }
-        // setTimeout(() => {
-        //   this.setState({
-        //     error: false,
-        //   });
-        //   setTimeout(() => {  
-        //     this.getDataFromAPI();
-        //   }, 3000);
-        // }, 3000);
-
+      // setTimeout(() => {
+      //   this.setState({
+      //     errorMessage: "",
+      //   });
+      //   setTimeout(() => {  
+      //     this.getDataFromAPI();
+      //   }, 3000);
+      // }, 3000);
 
 const style = StyleSheet.create({
   container: {
