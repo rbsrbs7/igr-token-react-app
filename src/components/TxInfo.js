@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, Image, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import timeDifference from '../helper/timeDifference';
 
 const TxInfo = props => {
   const { txInfo, navigateToTxInfoScreen, index } = props;
@@ -64,30 +65,6 @@ const TxInfo = props => {
     </TouchableOpacity>
   );
 };
-
-const timeDifference = previous => {
-  var current = Date.now();
-  var msPerMinute = 60 * 1000;
-  var msPerHour = msPerMinute * 60;
-  var msPerDay = msPerHour * 24;
-  var msPerMonth = msPerDay * 30;
-  var msPerYear = msPerDay * 365;
-  var elapsed = current - previous * 1000;
-
-  if (elapsed < msPerMinute) {
-     return Math.round(elapsed/1000) + ' seconds ago';   
-  } else if (elapsed < msPerHour) {
-     return Math.round(elapsed/msPerMinute) + ' minutes ago';   
-  } else if (elapsed < msPerDay ) {
-     return Math.round(elapsed/msPerHour ) + ' hours ago';   
-  } else if (elapsed < msPerMonth) {
-    return 'approximately ' + Math.round(elapsed/msPerDay) + ' days ago';   
-  } else if (elapsed < msPerYear) {
-    return 'approximately ' + Math.round(elapsed/msPerMonth) + ' months ago';   
-  } else {
-    return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years ago';   
-  }
-}
 
 String.prototype.trunc = String.prototype.trunc || function(n) {
   return (this.length > n) ? this.substr(0, n-1) + '...' : this;

@@ -2,8 +2,8 @@ import React from 'react';
 import { View, ScrollView, Text, Image, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { StringDecoder } from 'string_decoder';
-import hex2ascii from 'hex2ascii';
+import hexToAscii from '../helper/hexToAscii';
+import timeDifference from '../helper/timeDifference';
 
 export default class TxInfoScreen extends React.Component {
   constructor(props) {
@@ -14,7 +14,8 @@ export default class TxInfoScreen extends React.Component {
   }
 
   render() {
-    const { hash, blockNumber, from, to, value, input } = this.state.txInfo;
+    const { hash, blockNumber, timestamp, from, to, value, input } = this.state.txInfo;
+    const age = timeDifference(timestamp);
     return (
       <ScrollView>
         <View style={styles.viewTxInfo}>
@@ -22,7 +23,7 @@ export default class TxInfoScreen extends React.Component {
             <Text style={styles.textLabel}>
               <Icon name="hashtag" size={20}/> TxHash: 
               <Text style={styles.textValue}>
-                {hash} 
+                {hash}
               </Text>
             </Text>
           </View>
@@ -32,6 +33,14 @@ export default class TxInfoScreen extends React.Component {
               <Text style={styles.textValue}>
                 {blockNumber} 
               </Text>
+            </Text>
+          </View>
+          <View style={styles.viewData}>
+            <Text style={styles.textLabel}>
+              <Icon name="clock-o" size={20}/> Age: 
+            </Text>
+            <Text style={styles.textValue}>
+              {age} 
             </Text>
           </View>
           <View style={styles.viewData}>
@@ -62,7 +71,7 @@ export default class TxInfoScreen extends React.Component {
             <Text style={styles.textLabel}>
               <Icon name="file-text-o" size={20}/> input:  
               <Text style={styles.textValue}>
-                {this.hexToAscii(input)} 
+                {hexToAscii(input)} 
               </Text>
             </Text>
           </View>
@@ -73,11 +82,6 @@ export default class TxInfoScreen extends React.Component {
 
   componentDidMount() {
   }
-
-  hexToAscii(string) {
-    var asciiString = hex2ascii(string);
-    return asciiString;
-  }
 }
 
 const styles = StyleSheet.create({
@@ -86,7 +90,6 @@ const styles = StyleSheet.create({
   },
   viewTxInfo: {
     flex: 1,
-    borderBottomWidth: 2,
     borderBottomColor: "#bbb",
     flexDirection: 'column',
     backgroundColor: '#fff',

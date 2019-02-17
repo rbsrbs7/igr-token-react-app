@@ -20,22 +20,22 @@ export default class TxInfosScreen extends React.Component {
   }
 
   render() {
-    if(this.state.error) {
+    if(this.state.errorMessage) {
       return (
-        <View style={style.view}>
-          <Text style={style.text_error}> Falha na conexão</Text>
+        <View style={styles.view}>
+          <Text style={styles.textError}> {this.state.errorMessage}</Text>
         </View>
       );
     }
     if(this.state.loading) {
       return (
-        <View style={style.view}>
+        <View style={styles.view}>
           <Loading />
         </View>
       )
     }
     return (
-      <View style={style.view}>
+      <View style={styles.view}>
         <TxInfos 
           key="list" 
           txInfos={this.state.session.txInfos} 
@@ -55,8 +55,8 @@ export default class TxInfosScreen extends React.Component {
     session.concatenation = session.barcode + session.date;
     session.address = hash.update(this.state.session.concatenation).hex();
     session.address = "0x" + session.address.substr(session.address.length - 40);
-    session.address = "0x1448Eab3182B71aE5322168D037fEB0125CAC92F";
-    // session.address = "0xf048ca17c958ca3a284529f2e74d17fa276d93a8"; no data response
+    // session.address = "0x1448Eab3182B71aE5322168D037fEB0125CAC92F";
+    // session.address = "0xf048ca17c958ca3a284529f2e74d17fa276d93a8"; // no data response
     this.setState({session}, () => {
       this.getDataFromAPI();
     });
@@ -70,29 +70,38 @@ export default class TxInfosScreen extends React.Component {
       let apiUrlGetAddressTxInfos = 'https://api.ethplorer.io/getAddressTransactions/'+this.state.session.address+'?showZeroValues=1&apiKey=freekey';
       axios.get(apiUrlGetAddressTxInfos)
       .then(response => {
-        let session = {...this.state.session};
-        response.data.forEach(element => {
-          session.addressTxInfos.push(element);
-        });
-        this.setState({session}, () => {
-          this.state.session.addressTxInfos.forEach(addressTxInfo => {
-            let apiUrlGetTxInfo = 'https://api.ethplorer.io/getTxInfo/' + addressTxInfo['hash'] + '?apiKey=freekey'
-            axios.get(apiUrlGetTxInfo)
-            .then(response => {
-              let session = {...this.state.session};
-              session.txInfos.push(response.data);
-              this.setState({session}, () => {
-                if(this.state.session.txInfos.length == this.state.session.addressTxInfos.length) {
-                  this.setState({loading: false, errorMessage: ""}, () => {
-                  });
-                }
-              });
-            }).catch(error => {
-              let errorMessage = "Ethereum API didn't response.";
-              this.setState({errorMessage: errorMessage});
-            }); 
+        if(response.data.length > 0) {
+          let session = {...this.state.session};
+          response.data.forEach(element => {
+            session.addressTxInfos.push(element);
           });
-        });
+          this.setState({session}, () => {
+            this.state.session.addressTxInfos.forEach(addressTxInfo => {
+              let apiUrlGetTxInfo = 'https://api.ethplorer.io/getTxInfo/' + addressTxInfo['hash'] + '?apiKey=freekey'
+              axios.get(apiUrlGetTxInfo)
+              .then(response => {
+                let session = {...this.state.session};
+                session.txInfos.push(response.data);
+                this.setState({session}, () => {
+                  if(this.state.session.txInfos.length == this.state.session.addressTxInfos.length) {
+                    this.setState({loading: false, errorMessage: ""}, () => {
+                    });
+                  }
+                });
+              }).catch(error => {
+                let errorMessage = "Ethereum API didn't response.";
+                this.setState({errorMessage: errorMessage});
+              }); 
+            });
+          });
+        } else {
+          let errorMessage = "This product does not have any transaction.";
+          console.log(errorMessage);
+          this.setState({
+            loading: false,
+            errorMessage: errorMessage
+          });
+        }
       }).catch(error => {
         let errorMessage = "Ethereum API didn't response. Please wait for a new request after 5 seconds.";
         this.setState({errorMessage: errorMessage, loading: false}, () => {
@@ -111,15 +120,15 @@ export default class TxInfosScreen extends React.Component {
   }
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   view: {
     flex: 1,
     justifyContent: 'center',
   }, 
-  text_error: {
+  textError: {
     backgroundColor: '#FF0000',
     color: '#fff',
-    fontSize: 30,
+    fontSize: 20,
     alignSelf: 'center',
   },
 });
