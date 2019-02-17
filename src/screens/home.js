@@ -32,8 +32,8 @@ class HomeScreen extends React.Component {
         <View style={styles.viewButton}>
           <TouchableOpacity
             onPress={() => {
-              // this.props.navigation.navigate('ReadBarcodeFromInputScreen', {session: this.state.session});
-              this.props.navigation.navigate('TxInfosScreen', {session: this.state.session});
+              this.props.navigation.navigate('ReadBarcodeFromInputScreen', {session: this.state.session});
+              // this.props.navigation.navigate('TxInfosScreen', {session: this.state.session});
             }}
             style={styles.button}>
             <Text style={styles.textButton}>

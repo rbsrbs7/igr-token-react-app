@@ -45,7 +45,7 @@ class ReadBarcodeFromInputScreen extends React.Component {
   }
 
   componentDidMount() {
-  };
+  }
 
   checkText = text => {
     this.setState({barcode: text}, () => {

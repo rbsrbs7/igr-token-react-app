@@ -15,7 +15,7 @@ export default class TxInfosScreen extends React.Component {
     this.state = {
       session: this.props.navigation.getParam("session"),
       loading: true,
-      errorMessage: '',
+      errorMessage: ''
     };
   }
 
