@@ -3,7 +3,8 @@ import HomeScreen from './screens/home';
 import ReadBarcodeFromInputScreen from './screens/readBarcodeFromInput';
 import ReadBarcodeFromCameraScreen from './screens/readBarcodeFromCamera';
 import ReadDateFromInputScreen from './screens/readDateFromInput';
-import ShowResultsScreen from './screens/showResults';
+import TxInfoScreen from './screens/txInfo';
+import TxInfosScreen from './screens/txInfos';
 
 console.disableYellowBox = true;
 
@@ -18,7 +19,7 @@ export default StackNavigator({
         headerTitleStyle: {
           fontSize: 20,
           color: '#fff',
-          alignSelf: 'center',
+          alignSelf: 'center'
         },
       });
     }
@@ -31,7 +32,7 @@ export default StackNavigator({
         headerTitleStyle: {
           fontSize: 20,
           color: '#fff',
-          alignSelf: 'center',
+          alignSelf: 'center'
         }
       });
     }
@@ -44,7 +45,7 @@ export default StackNavigator({
         headerTitleStyle: {
           fontSize: 20,
           color: '#fff',
-          alignSelf: 'center',
+          alignSelf: 'center'
         }
       });
     }
@@ -57,24 +58,37 @@ export default StackNavigator({
         headerTitleStyle: {
           fontSize: 20,
           color: '#fff',
-          alignSelf: 'center',
+          alignSelf: 'center'
         }
       });
     }
   },
-  'ShowResultsScreen' : {
-    screen: ShowResultsScreen,
+  'TxInfosScreen' : {
+    screen: TxInfosScreen,
     navigationOptions: () => {
       return ({
-        title: "Results",
+        title: "TxInfos",
         headerTitleStyle: {
           fontSize: 20,
           color: '#fff',
-          alignSelf: 'center',
+          alignSelf: 'center'
         }
       });
     }
   },
+  'TxInfoScreen' : {
+    screen: TxInfoScreen,
+    navigationOptions: () => {
+      return ({
+        title: "TxInfo",
+        headerTitleStyle: {
+          fontSize: 20,
+          color: '#fff',
+          alignSelf: 'center'
+        }
+      });
+    }
+  }
 },{
   navigationOptions: {
     'title': 'IGR-Token',
@@ -82,7 +96,7 @@ export default StackNavigator({
     headerStyle: {
       backgroundColor: '#000', // vermelho ketchup
       borderBottomWidth: 1,
-      borderBottomColor: '#C5C5C5', // cinza claro
+      borderBottomColor: '#C5C5C5' // cinza claro
     }, 
     headerTitleStyle: {
       fontSize: 20,

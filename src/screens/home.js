@@ -33,7 +33,7 @@ class HomeScreen extends React.Component {
           <TouchableOpacity
             onPress={() => {
               // this.props.navigation.navigate('ReadBarcodeFromInputScreen', {session: this.state.session});
-              this.props.navigation.navigate('ShowResultsScreen', {session: this.state.session});
+              this.props.navigation.navigate('TxInfosScreen', {session: this.state.session});
             }}
             style={styles.button}>
             <Text style={styles.textButton}>

@@ -27,7 +27,7 @@ class ReadDateFromInputScreen extends React.Component {
             <TextInput
               style={styles.textInput}
               maxLength={6}
-              placeholder="Type date here on format YYYYMM"
+              placeholder="Type date here on format YYMMDD"
               keyboardType='numeric'
               onChangeText={(text) => { this.setState({date: text}); }}
               value={this.state.date}
@@ -89,7 +89,7 @@ class ReadDateFromInputScreen extends React.Component {
           session.date = year + month + day;
           session.concatenation = session.barcode + session.date;
           this.setState({session: session, error: ""}, () => {
-            this.props.navigation.navigate('ShowResultsScreen', { session: this.state.session } ); 
+            this.props.navigation.navigate('TxInfosScreen', { session: this.state.session } ); 
           });
         }
       } 
