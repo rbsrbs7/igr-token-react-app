@@ -5,6 +5,7 @@ import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet } from 'rea
 import { RNCamera } from 'react-native-camera';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import checkDigit from '../helper/checkDigit';
+import ErrorMessage from '../components/ErrorMessage';
 
 class ReadBarcodeFromCameraScreen extends React.Component {
   constructor(props) {
@@ -13,6 +14,8 @@ class ReadBarcodeFromCameraScreen extends React.Component {
       session: this.props.navigation.getParam("session"),
       type: "",
       barcode: "",
+      errorMessage: "",
+      wait: false
     };
   }
 
@@ -30,9 +33,11 @@ class ReadBarcodeFromCameraScreen extends React.Component {
             permissionDialogTitle={'Permission to use camera'}
             permissionDialogMessage={'We need your permission to use your camera phone'}
             onGoogleVisionBarcodesDetected={({ barcodes }) => {
-              this.setState({type: barcodes[0].type, barcode: barcodes[0].data}, () => {
-                this.checkBarcode;
-              });
+              if(!this.state.wait) {
+                this.setState({type: barcodes[0].type, barcode: barcodes[0].data, errorMessage: "", wait: true}, () => {
+                  this.checkBarcode();
+                });
+              }
             }}
           />
         </View>
@@ -44,6 +49,9 @@ class ReadBarcodeFromCameraScreen extends React.Component {
             <Icon name="barcode" size={20}/> barcode: {this.state.barcode}
           </Text>
         </View>
+        <View style={{flex: 1}}>
+          <ErrorMessage message={this.state.errorMessage} />
+        </View>
       </View>
     );
   }
@@ -51,14 +59,19 @@ class ReadBarcodeFromCameraScreen extends React.Component {
   componentDidMount() {
   }
 
-  checkBarcode = () => {
-    let session = {...this.state.session};
-    session.barcode = this.state.barcode;
-    this.setState({session}, () => {
-      console.log(this.state.session.barcode);
-      console.log(this.state.type);
-      this.props.navigation.navigate('ReadDateFromInputScreen', { session: this.state.session });
-    });
+  checkBarcode() {
+    if(this.state.type.includes("EAN_13")) {
+      if(checkDigit(this.state.barcode)) {
+        let session = {...this.state.session};
+        session.barcode = this.state.barcode;
+        this.setState({session: session, errorMessage: "", wait: false}, () => {
+          this.props.navigation.navigate('ReadDateFromInputScreen', { session: this.state.session });
+        });
+      }
+    } else {
+      let errorMessage = "This is not a valid GTIN-13 code";
+      this.setState({errorMessage:errorMessage, wait: false});
+    }
   }
 }
 
