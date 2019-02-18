@@ -4,6 +4,7 @@ import Loading from '../components/Loading'
 import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import checkDigit from '../helper/checkDigit';
 
 class ReadBarcodeFromCameraScreen extends React.Component {
   constructor(props) {

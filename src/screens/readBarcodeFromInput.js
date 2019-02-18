@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import checkDigit from '../helper/checkDigit';
+import ErrorMessage from '../components/ErrorMessage';
 
 class ReadBarcodeFromInputScreen extends React.Component {
   
@@ -8,6 +10,7 @@ class ReadBarcodeFromInputScreen extends React.Component {
     super(props);
     this.state = {
       session: this.props.navigation.getParam("session"),
+      errorMessage: "",
       barcode: ""
     };
   }
@@ -40,6 +43,9 @@ class ReadBarcodeFromInputScreen extends React.Component {
             </Text>
           </TouchableOpacity>
         </View>
+        <View style={{flex: 1}}>
+          <ErrorMessage message={this.state.errorMessage} />
+        </View>
       </View>
     );
   }
@@ -48,13 +54,18 @@ class ReadBarcodeFromInputScreen extends React.Component {
   }
 
   checkText = text => {
-    this.setState({barcode: text}, () => {
+    this.setState({barcode: text, errorMessage: ""}, () => {
       if(this.state.barcode.length == 13) {
-        let session = {...this.state.session};
-        session.barcode = text;
-        this.setState({session}, () => {
-          this.props.navigation.navigate('ReadDateFromInputScreen', { session: this.state.session } );
-        });
+        if(checkDigit(this.state.barcode)) {
+          let session = {...this.state.session};
+          session.barcode = text;
+          this.setState({session: session}, () => {
+            this.props.navigation.navigate('ReadDateFromInputScreen', { session: this.state.session } );
+          });
+        } else {
+          let errorMessage = "This is not a valid GTIN-13 code";
+          this.setState({errorMessage:errorMessage});
+        }
       }
     });
   }
