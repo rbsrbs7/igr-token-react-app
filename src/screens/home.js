@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import SplashScreen from 'react-native-splash-screen';
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -46,6 +47,7 @@ class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
+    SplashScreen.hide();
   };
 }
 
