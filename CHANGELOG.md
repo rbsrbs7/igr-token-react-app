@@ -1,3 +1,8 @@
+## [1.0.1] - 2019-02-20
+
+#### Alterado
+- corrigido chamadas repetidas da mesma tela após leitura do GTIN-13
+
 ## [1.0.0] - 2019-02-18
 
 #### Versão inicial React Native
