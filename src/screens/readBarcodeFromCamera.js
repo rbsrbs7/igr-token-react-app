@@ -64,8 +64,11 @@ class ReadBarcodeFromCameraScreen extends React.Component {
       if(checkDigit(this.state.barcode)) {
         let session = {...this.state.session};
         session.barcode = this.state.barcode;
-        this.setState({session: session, errorMessage: "", wait: false}, () => {
+        this.setState({session: session, errorMessage: ""}, () => {
           this.props.navigation.navigate('ReadDateFromInputScreen', { session: this.state.session });
+          setTimeout(() => { // wait 5 seconds to allow new camera reads
+            this.setState({wait: false});
+          }, 5000);
         });
       }
     } else {

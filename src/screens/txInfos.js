@@ -55,7 +55,7 @@ export default class TxInfosScreen extends React.Component {
     session.concatenation = session.barcode + session.date;
     session.address = hash.update(this.state.session.concatenation).hex();
     session.address = "0x" + session.address.substr(session.address.length - 40);
-    // session.address = "0x1448Eab3182B71aE5322168D037fEB0125CAC92F";
+    // session.address = "0x1448Eab3182B71aE5322168D037fEB0125CAC92F"; // a lot of many data response
     // session.address = "0xf048ca17c958ca3a284529f2e74d17fa276d93a8"; // no data response
     this.setState({session}, () => {
       this.getDataFromAPI();

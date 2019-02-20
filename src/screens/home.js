@@ -27,7 +27,7 @@ class HomeScreen extends React.Component {
           This app helps you determine if a certain specific recipe 
           based food include any IGR certified ingredients. To do this the App 
           will ask you for the Barcode (GS1 GTIN-13) on the wrapping and the 
-          latest date associoated with the production lot. Usually the date 
+          latest date associated with the production lot. Usually the date 
           is printed on the wrapper.
         </Text>
         <View style={styles.viewButton}>
